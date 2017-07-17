@@ -3,6 +3,10 @@
 Web scraping script to get books data from http://gihyo.jp/book/genre
 
 ```bash
+pip install -U scrapy
+```
+
+```bash
 # rm -f result/book.csv
 scrapy crawl gihyo -o result/book.csv
 ````
