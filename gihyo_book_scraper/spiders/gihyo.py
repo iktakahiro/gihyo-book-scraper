@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from typing import Union
 import scrapy
 from scrapy.http import Response
 
@@ -25,7 +24,7 @@ class GihyoSpider(scrapy.Spider):
 
             yield scrapy.Request(target_url, callback=self._parse_item)
 
-    def _parse_item(self, response: Response) -> Union(dict, Response):
+    def _parse_item(self, response: Response):
         """Scrape a target HTML.
 
         :param Response response: scrapy.http.Response instance
