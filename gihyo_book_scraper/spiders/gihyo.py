@@ -1,30 +1,34 @@
 # -*- coding: utf-8 -*-
-import scrapy
 
+from typing import Union
+import scrapy
+from scrapy.http import Response
+
+NAME = 'gihyo'
 DOMAIN = 'gihyo.jp'
 BASE_URL = f'http://{DOMAIN}/book/genre'
 
 
 class GihyoSpider(scrapy.Spider):
-    name = "gihyo"
+    name = NAME
     allowed_domains = [DOMAIN]
     start_urls = [BASE_URL]
 
-    def parse(self, response):
-        """Entry point of scrapy.
+    def parse(self, response: Response) -> Response:
+        """Entry point of spider.
 
-        :param response:
-        :yield:
+        :param Response response: scrapy.http.Response instance
+        :yield: scrapy.http.Response instance
         """
         for href in response.css('#genreList ul ul li a::attr(href)'):
             target_url = response.urljoin(href.extract())
 
             yield scrapy.Request(target_url, callback=self._parse_item)
 
-    def _parse_item(self, response):
-        """Scrape the target HTML.
+    def _parse_item(self, response: Response) -> Union(dict, Response):
+        """Scrape a target HTML.
 
-        :param scrapy.Request response: Request Class of scrapy
+        :param Response response: scrapy.http.Response instance
         :yield:
         """
         genre = response.css('.B_crumbBox span+a+a::text').extract_first()
@@ -74,6 +78,7 @@ class GihyoSpider(scrapy.Spider):
             yield scrapy.Request(next_url, callback=self._parse_item)
 
 
+# TODO
 LANGUAGE_LIST = [
     'Python',
     'Ruby',
@@ -89,7 +94,7 @@ LANGUAGE_LIST = [
 
 
 def classify_programing_language(title: str) -> str:
-    """Classify programing language
+    """Classify programing language.
 
     :param str title: Title of a book
     :rtype: str
