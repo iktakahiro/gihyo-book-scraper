@@ -2,11 +2,17 @@
 
 Web scraping script to get books data from http://gihyo.jp/book/genre
 
-```bash
-pip install -U scrapy
-```
+## Setup
 
 ```bash
+conda install scrapy
+```
+
+## Usage
+
+```bash
+cd ./gihyo-book-scraper
+
 # rm -f result/book.csv
 scrapy crawl gihyo -o result/book.csv
 ````
@@ -25,3 +31,4 @@ published_at | Date of published
 price | Price
 is_stock | When a stock is available, this fields is 1.
 url | URL
+
