@@ -2,6 +2,7 @@
 
 import scrapy
 from scrapy.http import Response
+from datetime import datetime
 
 NAME = 'gihyo'
 DOMAIN = 'gihyo.jp'
@@ -44,9 +45,15 @@ class GihyoSpider(scrapy.Spider):
             if genre_id == '06':  # プログラミング・システム開発
                 programing_language = classify_programing_language(title)
 
+            if genre_id == '05':  # プログラミング・システム開発
+                genre = 'プログラミング・システム開発 (ハードウェア)'
+
             published_at = x_book.css('p.sellingdate::text').re_first(r'^(.+)発売$')
             if published_at is None:
                 published_at = x_book.css('p.sellingdate span::text').re_first(r'^(.+)発売$')
+
+            d = datetime.strptime(published_at, '%Y年%m月%d日')
+            published_at = d.strftime('%Y-%m-%d')
 
             x_price = x_book.css('p.price::text')
             is_stock = 1
